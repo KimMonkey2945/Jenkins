@@ -41,14 +41,14 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps{
-                sh'''
-                    npm install netlify-cli@20.1.1
-                    node_modules/.bin/netlify --version
-                '''
-            }
-        }
+       stage('Deploy') {
+           steps{
+               sh '''
+                   npm install netlify-cli@19.1.7 --no-save
+                   node_modules/.bin/netlify --version
+               '''
+           }
+       }
     }
 
     post {
