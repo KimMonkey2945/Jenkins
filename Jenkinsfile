@@ -6,6 +6,10 @@ pipeline {
             }
        }
 
+     environment{
+        NETLIFY_SITE_ID = '5a9d7b10-3a84-4908-90bd-250b19865d04'
+     }
+
     stages {
         stage('build') {
             steps {
@@ -46,6 +50,7 @@ pipeline {
                sh '''
                    npm install netlify-cli@19.1.7 --no-save
                    node_modules/.bin/netlify --version
+                   echo "프로젝트 배포중  :   사이트 아이디  : $NETLIFY_SITE_ID "
                '''
            }
        }
