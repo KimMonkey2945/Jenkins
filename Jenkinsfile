@@ -52,7 +52,8 @@ pipeline {
                    npm install netlify-cli@19.1.7 --no-save
                    node_modules/.bin/netlify --version
                    echo "프로젝트 배포중  :   사이트 아이디  : $NETLIFY_SITE_ID"
-                    node_modules/.bin/netlify status
+                   node_modules/.bin/netlify status
+                   node_modules/.bin/netlify deploy --dir=build --prod
                '''
            }
        }
