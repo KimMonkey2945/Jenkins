@@ -1,10 +1,6 @@
 pipeline {
-     agent{
-            docker{
-                image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-                reuseNode true
-            }
-       }
+
+    agent none
 
      environment{
         NETLIFY_SITE_ID = '5a9d7b10-3a84-4908-90bd-250b19865d04'
@@ -12,7 +8,29 @@ pipeline {
      }
 
     stages {
+
+        stage('AWS'){
+            agent{
+                docker{
+                    image 'amazon/aws-cli'
+                    args"--entrypoint=''"
+                }
+            }
+            steps{
+
+                sh 'aws --version'
+            }
+        }
+
+
         stage('build') {
+
+            agent{
+                docker{
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                }
+            }
+
             steps {
                 sh'''
                     ls -la
@@ -27,6 +45,12 @@ pipeline {
 
         stage('test') {
 
+           agent{
+                        docker{
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                        }
+                    }
+
             steps {
                 echo '"Test stage"'
                 sh'''
@@ -37,6 +61,13 @@ pipeline {
         }
 
         stage('E2E'){
+
+           agent{
+                        docker{
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                        }
+                    }
+
             steps{
                 sh'''
                     npm install serve
@@ -48,6 +79,12 @@ pipeline {
 
 
        stage('Deploy staging') {
+
+          agent{
+                       docker{
+                           image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                       }
+                   }
            steps{
                sh '''
                    npm install netlify-cli@19.1.7 --no-save
@@ -61,6 +98,12 @@ pipeline {
 
 
        stage('Deploy prod') {
+
+          agent{
+                       docker{
+                           image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                       }
+                   }
            steps{
                sh '''
                    npm install netlify-cli@19.1.7 --no-save
@@ -73,6 +116,12 @@ pipeline {
        }
 
        stage('Prod E2E'){
+
+          agent{
+                       docker{
+                           image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                       }
+                   }
 
             environment{
                 CI_ENVIRONMENT_URL = 'https://peaceful-flan-e89814.netlify.app'
@@ -88,9 +137,4 @@ pipeline {
 
     }
 
-    post {
-        always{
-            junit 'jest-results/junit.xml'
-        }
-    }
 }
