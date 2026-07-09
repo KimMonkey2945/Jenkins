@@ -17,8 +17,11 @@ pipeline {
                 }
             }
             steps{
+                sh '''
+                   aws --version
+                   aws s3 ls
 
-                sh 'aws --version'
+                '''
             }
         }
 
