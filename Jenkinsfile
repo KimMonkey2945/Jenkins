@@ -57,6 +57,21 @@ pipeline {
                '''
            }
        }
+
+       stage('Prod E2E'){
+
+            environment{
+                CI_ENVIRONMENT_URL = 'https://peaceful-flan-e89814.netlify.app'
+            }
+
+
+            steps{
+                sh '''
+                      npx playwright test --reporter=html
+                '''
+            }
+       }
+
     }
 
     post {
